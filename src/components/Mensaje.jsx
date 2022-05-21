@@ -1,8 +1,8 @@
 
-export default function Mensaje({children, tipo}) {
+export default function Mensaje(props) {
   return (
-    <div className={`alerta ${tipo}`}>
-        {children}
+    <div className={`alerta ${props.tipo}`}>
+        {props.children}
     </div>
   )
 }
