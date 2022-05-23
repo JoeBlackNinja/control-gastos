@@ -9,6 +9,8 @@ const ListadoGastos = (props) => {
             <Gasto 
               key={gasto.id}
               gasto={gasto}
+              setGastoEditar={props.setGastoEditar}
+              eliminarGasto={props.eliminarGasto}
             />
         ))}
     </div>

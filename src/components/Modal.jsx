@@ -1,5 +1,5 @@
 import CerrarBtn from '../img/cerrar.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Mensaje from './Mensaje';
 
 const Modal = (props) => {
@@ -8,9 +8,23 @@ const Modal = (props) => {
     const [cantidad,setCantidad] = useState('');
     const [categoria,setCategoria] = useState('');
     const [mensaje,setMensaje] = useState('');
+    const [id,setId] = useState('');
+    const [fecha,setFecha] = useState('');
+
+    useEffect(() => {
+        if(Object.keys(props.gastoEditar).length > 0) {
+           setNombre(props.gastoEditar.nombre);
+           setCantidad(props.gastoEditar.cantidad);
+           setCategoria(props.gastoEditar.categoria);
+           setId(props.gastoEditar.id);
+           setFecha(props.gastoEditar.fecha);
+          } 
+    }, [])
+    
     
     const ocultarModal = () => {
         props.setAnimarModal(false)
+        props.setGastoEditar({})
         setTimeout(() => {
             props.setModal(false)
         }, 400)
@@ -25,7 +39,7 @@ const Modal = (props) => {
             },2000);              
             return;
         }
-        props.guardarGasto({nombre, cantidad, categoria});
+        props.guardarGasto({nombre, cantidad, categoria, id, fecha});
         ocultarModal(); 
     }
 
@@ -41,7 +55,7 @@ const Modal = (props) => {
         <form 
             onSubmit={handleSubmit}
             className={`formulario ${props.animarModal ? "animar" : "cerrar"}`}>
-            <legend>Nuevo gasto</legend>
+            <legend>{props.gastoEditar.nombre ? 'Editar gasto': 'Nuevo gasto'}</legend>
             {mensaje && <Mensaje tipo={'error'}>{mensaje}</Mensaje>}
             <div className='campo'>
                 <label htmlFor='nombre'>Nombre gasto</label>
@@ -69,6 +83,7 @@ const Modal = (props) => {
                 <label htmlFor='categoria'>Categoria</label> 
                 <select
                     id="categoria"
+                    value={categoria}
                     onChange={e => setCategoria(e.target.value)}
                 >
                     <option value="">-- Seleccione --</option>
@@ -82,7 +97,8 @@ const Modal = (props) => {
                 </select>               
             </div>
             <input 
-                type="submit"                
+                type="submit"
+                value={props.gastoEditar.nombre ? 'Editar gasto': 'Nuevo gasto'}                
             ></input>
         </form>
     </div>
