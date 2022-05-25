@@ -11,11 +11,12 @@ const ControlPresupuesto = (props) => {
         const totalGastado = props.gastos.reduce((total, gasto) => parseInt(gasto.cantidad)  + parseInt(total), 0)
         const totalDisponible = props.presupuesto - totalGastado;
         const porcentaje = ((props.presupuesto - totalGastado)/props.presupuesto) * 100;
+        const porcentajeToFixed = porcentaje.toFixed(2);
 
         setDisponible(totalDisponible)
         setGastado(totalGastado)
         setTimeout(() => {
-            setPorcentaje(porcentaje);
+            setPorcentaje(porcentajeToFixed);
         }, 1500)
     }, [props.gastos])  
 
@@ -35,7 +36,7 @@ const ControlPresupuesto = (props) => {
                     trailColor: '#D2DEFF'
                 })}
                 value={porcentaje}
-                text={`${100-porcentaje}% Gastado`}
+                text={`${porcentaje}% Disponible`}
             />
         </div>
         <div className="contenido-presupuesto">
