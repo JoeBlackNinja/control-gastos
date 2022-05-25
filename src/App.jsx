@@ -8,7 +8,7 @@ import ListadoGastos from './components/ListadoGastos'
 
 function App() {
 
-  const [presupuesto, setPresupuesto] = useState('');
+  const [presupuesto, setPresupuesto] = useState(localStorage.getItem('presupuesto') ?? 0);
   const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
   const [modal,setModal] = useState(false);
   const [animarModal, setAnimarModal] = useState(false);
@@ -25,6 +25,17 @@ function App() {
       
     }    
   }, [gastoEditar])
+
+  useEffect(() => {
+    localStorage.setItem('presupuesto', presupuesto ?? 0);
+  }, [presupuesto])
+
+  useEffect(() => {
+    const presupuestoLS = Number(localStorage.getItem('presupuesto') ?? 0);
+    if(presupuesto > 0){
+      setIsValidPresupuesto(true);
+    }
+  },[])
   
 
   const handleNuevoGasto = () => {
@@ -63,6 +74,7 @@ function App() {
   return (
     <div className={modal ? 'fijar' : ''}>
       <Header
+        
         gastos={gastos}
         presupuesto={presupuesto}
         setPresupuesto={setPresupuesto}
